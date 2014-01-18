@@ -1,0 +1,9 @@
+test: test.o TOKENSTREAM.o
+	g++ -o test test.o TOKENSTREAM.o 
+
+test.o: test.cpp
+	g++ -c test.cpp 
+
+TOKENSTREAM.o: TOKENSTREAM.cpp
+	g++ -c TOKENSTREAM.cpp
+
