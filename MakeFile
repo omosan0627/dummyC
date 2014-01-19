@@ -1,9 +1,15 @@
-test: test.o TOKENSTREAM.o
-	g++ -o test test.o TOKENSTREAM.o 
+test: test.o TOKENSTREAM.o Parser.o AST.o
+	g++ -o test test.o TOKENSTREAM.o Parser.o AST.o
+
+Parser.o: Parser.cpp
+	g++ -c Parser.cpp
 
 test.o: test.cpp
 	g++ -c test.cpp 
 
 TOKENSTREAM.o: TOKENSTREAM.cpp
 	g++ -c TOKENSTREAM.cpp
+
+AST.o : AST.cpp
+	g++ -c AST.cpp
 

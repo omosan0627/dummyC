@@ -1,6 +1,10 @@
 #ifndef AST_HPP
 #define AST_HPP
 
+#include <string>
+#include <vector>
+#include "APP.hpp"
+
 enum AstID { 
 	BaseID, 
 	VariableDeclID, 
@@ -8,10 +12,11 @@ enum AstID {
 	CallExprID, 
 	JumpStmtID, 
 	VariableID, 
-	NumberID
+	NumberID, 
+	NullExprID
 }; 
 
-class BaseAst { 
+class BaseAST { 
 	private:
 		AstID ID; 
 
@@ -20,6 +25,15 @@ class BaseAst {
 		virtual ~BaseAST() { }
 		AstID getValueID() const { return ID; }
 
+}; 
+
+class NullExprAST : public BaseAST { 
+	public:
+		NullExprAST() : BaseAST(NullExprID) { }
+		static inline bool classof(NullExprAST const * ) { return true; }
+		static inline bool classof(BaseAST const * base) { 
+			return base->getValueID() == NullExprID; 
+		}
 }; 
 
 class VariableDeclAST: public BaseAST { 
@@ -90,13 +104,13 @@ class CallExprAST : public BaseAST {
 
 		std::string getCallee() { return Callee; }
 
-		BaseAst * getArgs(int i) { if(i < Arg.size())return Args.at(i); else return NULL; }
+		BaseAST * getArgs(int i) { if(i < Args.size())return Args.at(i); else return NULL; }
 
 }; 
 
-class JumStmtAST : public BaseAST { 
+class JumpStmtAST : public BaseAST { 
 	private:
-		BaseAST * expr; 
+		BaseAST * Expr; 
 	
 	public:
 		JumpStmtAST(BaseAST * expr) : BaseAST(JumpStmtID), Expr(expr) { }
@@ -104,7 +118,7 @@ class JumStmtAST : public BaseAST {
 
 		static inline bool classof(JumpStmtAST const * ) { return true; }
 
-		static inline bool classsof(BaseAST const * base) { 
+		static inline bool classof(BaseAST const * base) { 
 			return base->getValueID() == JumpStmtID; 
 		}
 
